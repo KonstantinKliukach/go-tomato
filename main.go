@@ -67,6 +67,14 @@ func getNextTomatoName(num int) string {
 	return name
 }
 
+func getListOfCommands(t map[string]tomato) string {
+	var r strings.Builder
+	for key, el := range t {
+		r.WriteString(fmt.Sprintf("\"%s\" for running %s with duration of %d minutes\n", key, el.name, el.duration))
+	}
+	return r.String()
+}
+
 func main() {
 	current := 1
 	t := map[string]tomato{
@@ -83,10 +91,10 @@ func main() {
 			duration: 15,
 		},
 	}
-	fmt.Println(t)
+
 	for {
 		fmt.Printf("Next tomato is: %s\n", getNextTomatoName(current))
-		fmt.Println("If you are ready, print \"yes\"")
+		fmt.Printf("If you are ready, print \"yes\" or one of these commands:\n%s or press \"no\" to exit programm", getListOfCommands(t))
 		i := make(chan string, 1)
 
 		go getInput(i)
