@@ -1,3 +1,3 @@
-module pomodoro
+module pomidoro
 
 go 1.19

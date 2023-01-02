@@ -4,32 +4,10 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"pomidoro/utils"
 	"strings"
 	"time"
 )
-
-func naiveTimer(max int) {
-	ticker := time.NewTicker(1 * time.Second)
-	isDone := make(chan bool)
-
-	whenOver := time.Now().Add(time.Duration(max) * time.Minute)
-	go func() {
-		for {
-			select {
-			case <-isDone:
-				return
-			case t := <-ticker.C:
-				diff := whenOver.Sub(t)
-				out := time.Time{}.Add(diff)
-				fmt.Print("\033[H\033[2J")
-				fmt.Println(out.Format("15:04:05"))
-			}
-		}
-	}()
-	time.Sleep(time.Duration(max) * time.Minute)
-	ticker.Stop()
-	isDone <- true
-}
 
 type tomato struct {
 	name     string
@@ -40,7 +18,7 @@ func (t tomato) Start() {
 	fmt.Printf("Time to %s\n", strings.ToLower(t.name))
 	seconds := 3
 	time.Sleep(time.Duration(seconds) * time.Second)
-	naiveTimer(t.duration)
+	utils.Timer(t.duration)
 }
 
 func getInput(c chan string) {
